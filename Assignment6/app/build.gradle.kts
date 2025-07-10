@@ -49,6 +49,8 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
 
     // Unit testing
     testImplementation("junit:junit:4.13.2")

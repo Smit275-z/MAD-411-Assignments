@@ -1,13 +1,16 @@
 package com.example.assignment6
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log // Add this import
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assignment6.databinding.ActivityMainBinding
 import java.util.Calendar
+import android.net.Uri
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,14 +20,26 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("Lifecycle", "onCreate called") // Log here
+        Log.d("Lifecycle", "onCreate called")
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ExpenseAdapter(expenses) { position ->
-            expenses.removeAt(position)
-            adapter.notifyItemRemoved(position)
-        }
+        adapter = ExpenseAdapter(
+            expenses,
+            onDeleteClick = { position ->
+                expenses.removeAt(position)
+                adapter.notifyItemRemoved(position)
+            },
+            onDetailsClick = { expense ->
+                val intent = Intent(this, ExpenseDetailsActivity::class.java).apply {
+                    putExtra("name", expense.name)
+                    putExtra("amount", expense.amount)
+                    putExtra("date", expense.date)
+                }
+                startActivity(intent)
+            }
+        )
 
         binding.expenseRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.expenseRecyclerView.adapter = adapter
@@ -66,6 +81,12 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Expense added!", Toast.LENGTH_SHORT).show()
         }
+        binding.btnFinancialTips.setOnClickListener {
+            val url = "https://www.canada.ca/en/services/finance.html"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        }
+
     }
 
     override fun onStart() {
