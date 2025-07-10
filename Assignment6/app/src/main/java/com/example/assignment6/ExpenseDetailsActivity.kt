@@ -1,6 +1,7 @@
 package com.example.assignment6
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,10 +17,15 @@ class ExpenseDetailsActivity : AppCompatActivity() {
         val nameText: TextView = findViewById(R.id.detailName)
         val amountText: TextView = findViewById(R.id.detailAmount)
         val dateText: TextView = findViewById(R.id.detailDate)
+        val backButton: Button = findViewById(R.id.backButton)
 
         nameText.text = "Name: $name"
         amountText.text = "Amount: $${"%.2f".format(amount)}"
         dateText.text = "Date: $date"
+
+        backButton.setOnClickListener {
+            finish()
+        }
     }
 }
 
